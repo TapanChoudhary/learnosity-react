@@ -1,9 +1,5 @@
 import { useEffect } from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import LearnosityConfig from "./LearnosityConfig";
-import { callbacks, initializationObject } from "./ConfigObj";
-import { request } from "./autoInit";
 
 function App() {
   // const { hook, callbacksEditor } = LearnosityConfig.learnosityConfig();
