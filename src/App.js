@@ -1,116 +1,106 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
+import Button from "./components/Button";
+import Card from "./components/Card";
+import { learnosityConfig } from "./learnosityConfig";
+import { mulipleChoice } from "./mulitpleChoice";
 
+var widget_json = localStorage.getItem("mcq")
+  ? JSON.parse(localStorage.getItem("mcq"))
+  : mulipleChoice;
 function App() {
+  const [isEditor, setEditor] = useState(false);
+  const [editor, setEditorData] = useState(null);
   // const { hook, callbacksEditor } = LearnosityConfig.learnosityConfig();
   //   var initOptionsEditor = LearnosityConfig.learnosityConfig().initOptionsEditor
 
-  useEffect(() => {
-    initialization();
-  }, []);
+  // useEffect(() => {
+  //   initialization();
+  // }, []);
 
-  const initialization = async () => {
-    var initOptions = {
-      assetRequest: function (
-        mediaRequested,
-        returnType,
-        callback,
-        attributes
-      ) {
-        // Do something.
-      },
-      configuration: {
-        consumer_key: process.env.CONSUMER_KEY,
-      },
-      label_bundle: {
-        // question attributes
-        stimulus: "Compose question",
-        options: "Options",
-        "validation.alt_responses.score": "Points",
-      },
-      question_type_templates: {
-        mcq: [
-          {
-            name: "MCQ - Custom Style",
-            reference: "customMCQ",
-            group_reference: "mcq",
-            description:
-              "Multiple Choice question with block style and predefined options.",
-            defaults: {
-              options: [
-                {
-                  label: "Dublin",
-                  value: "1",
-                },
-                {
-                  label: "Bristol",
-                  value: "2",
-                },
-                {
-                  label: "Liverpool",
-                  value: "3",
-                },
-                {
-                  label: "London",
-                  value: "4",
-                },
-              ],
-              // A newly added option will have the default label "New Label"
-              "options[]": "New Label",
-              ui_style: {
-                type: "block",
-                columns: 1,
-                choice_label: "upper-alpha",
-              },
-            },
-          },
-        ],
-      },
-      ui: {
-        layout: {
-          global_template: "edit_preview",
-          responsive_edit_mode: {
-            breakpoint: 800, // If the container width becomes less than 800px then switch to edit layout
-          },
-        },
-      },
-      widget_type: "response",
-    };
+  const handleGetWidget = () => {
+    console.log({ editor });
+    console.log(editor.getWidget(), editor.getJson());
+    localStorage.setItem("mcq", JSON.stringify(editor.getWidget()));
+    // editor.setWidget(editor.getWidget());
+  };
 
-    var hook = ".my-editor";
+  // const initialization = async () => {
+  //   const { hook, callbacksEditor, initOptionsEditor } = learnosityConfig;
+  //   editor = window.LearnosityQuestionEditor.init(
+  //     { ...initOptionsEditor, widget_json },
+  //     hook,
+  //     callbacksEditor
+  //   );
+  // };
 
-    var callbacks = {
-      readyListener: function () {
-        // Question Editor API sucessfully loaded according to pased init options
-        // we can now reliably start calling public methods and listen to events
-        questionEditorApp.on("widget:ready", function () {
-          // widget has changed, probably as a result of calling setWidget()
-        });
-      },
-      errorListener: function (e) {
-        //callback to occur on error
-        console.log("Error code ", e.code);
-        console.log("Error message ", e.message);
-        console.log("Error name ", e.name);
-        console.log("Error name ", e.title);
-      },
-    };
-
-    var questionEditorApp = window.LearnosityQuestionEditor.init(
-      initOptions,
+  const onClick = (val) => {
+    const { hook, callbacksEditor, initOptionsEditor } = learnosityConfig;
+    var editor = window.LearnosityQuestionEditor.init(
+      { ...initOptionsEditor, widget_json },
       hook,
-      callbacks
+      callbacksEditor
     );
-    // var authorApp = await window.LearnosityAuthor.init(request);
-    console.log({ questionEditorApp });
-    // console.log(editor.getWidget());
+    setEditorData(editor);
+  };
+
+  const handleGoBack = () => {
+    console.log("clicked");
+    setEditorData(null);
+    window.location.reload(true);
+  };
+
+  const handleSave = () => {
+    localStorage.setItem("mcq", JSON.stringify(editor.getWidget()));
+    alert("Data saved");
   };
 
   return (
     <div className="App">
-      <div className="new-course">
-        <div className="my-editor"></div>
-      </div>
+      {editor ? (
+        <>
+          <div
+            style={{ display: editor ? "block" : "none" }}
+            className="learnosity-question-editor"
+          ></div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Button text="Go back" handleClick={handleGoBack} />
+            <Button text="Save" handleClick={handleSave} />
+          </div>
+        </>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            margin: 10,
+            flexWrap: "wrap",
+          }}
+        >
+          <Card title="Multiple Choice" handleClick={() => onClick("mcq")} />
+          <Card
+            title="Fill in the Blanks"
+            handleClick={() => onClick("fitb")}
+          />
+          <Card
+            title="Classify, Match & Order"
+            handleClick={() => onClick("cl_mt_or")}
+          />
+          <Card
+            title="Written & Recorded -Essay"
+            handleClick={() => onClick("wr_re_es")}
+          />
+          <Card
+            title="Highlight and Drawing"
+            handleClick={() => onClick("hi_dr")}
+          />
+          <Card title="Math" handleClick={() => onClick("math")} />
+          <Card title="Graphing" handleClick={() => onClick("graph")} />
+          <Card title="Charts" handleClick={() => onClick("charts")} />
+          <Card title="Chemistry" handleClick={() => onClick("chem")} />
+          <Card title="Desmoz types" handleClick={() => onClick("desmoz")} />
+        </div>
+      )}
     </div>
   );
 }
