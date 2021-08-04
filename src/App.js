@@ -20,7 +20,7 @@ function App() {
         // Do something.
       },
       configuration: {
-        consumer_key: "ts34Rdc45SWE34f",
+        consumer_key: process.env.CONSUMER_KEY,
       },
       label_bundle: {
         // question attributes
