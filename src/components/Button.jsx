@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Button({ text, handleClick }) {
+export const Button = ({ text, handleClick }) => {
   return (
     <div>
       <button
@@ -19,4 +19,4 @@ export default function Button({ text, handleClick }) {
       </button>
     </div>
   );
-}
+};

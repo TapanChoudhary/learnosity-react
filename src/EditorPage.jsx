@@ -1,12 +1,8 @@
-import { useEffect } from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React, { useEffect } from "react";
+import { QUESTION_DATA } from "./constants/QuestionData";
 import { request } from "./autoInit";
 
-function App() {
-  // const { hook, callbacksEditor } = LearnosityConfig.learnosityConfig();
-  //   var initOptionsEditor = LearnosityConfig.learnosityConfig().initOptionsEditor
-
+export const EditorPage = ({ subType, label }) => {
   useEffect(() => {
     initialization();
   }, []);
@@ -17,41 +13,7 @@ function App() {
         //bindevent();
         console.log("Learnosity Author API is ready");
         authorApp.on("render:item", function () {
-          authorApp.setWidget(
-            {
-              options: [
-                {
-                  label: "A",
-                  value: "0",
-                },
-                {
-                  label: "B",
-                  value: "1",
-                },
-                {
-                  label: "C",
-                  value: "2",
-                },
-                {
-                  label: "D",
-                  value: "3",
-                },
-              ],
-              stimulus: "Multiple Choice - standard Testing",
-              type: "mcq",
-              validation: {
-                scoring_type: "exactMatch",
-                valid_response: {
-                  score: 1,
-                  value: ["0"],
-                },
-              },
-              ui_style: {
-                type: "horizontal",
-              },
-            },
-            "Multiple choice – standard"
-          );
+          authorApp.setWidget(QUESTION_DATA[subType], label);
         });
         authorApp.on("save:success", function (event) {
           console.info("AUTHOR APP ITEM SAVED");
@@ -93,12 +55,8 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <div className="main-content">
-        <div className="learnosity-author"></div>
-      </div>
+    <div className="main-content">
+      <div id="learnosity-author"></div>
     </div>
   );
-}
-
-export default App;
+};
