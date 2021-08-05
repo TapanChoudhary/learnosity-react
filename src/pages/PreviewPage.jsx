@@ -1,13 +1,9 @@
-import React, { useEffect } from "react";
-import { QUESTION_DATA } from "./constants/QuestionData";
-import { request } from "./previewInit";
+import React, { useEffect, useCallback } from "react";
+import { QUESTION_DATA } from "../constants/QuestionData";
+import { request } from "../initconfigs/previewInit";
 
 export const PreviewPage = ({ subType, label }) => {
-  useEffect(() => {
-    initialization();
-  }, []);
-
-  const initialization = async () => {
+  const initialization = useCallback(() => {
     var callbacks = {
       readyListener: function () {
         //bindevent();
@@ -51,7 +47,11 @@ export const PreviewPage = ({ subType, label }) => {
     // var authorApp = await window.LearnosityAuthor.init(request);
     console.log({ itemsApp });
     // console.log(editor.getWidget());
-  };
+  }, [label, subType]);
+
+  useEffect(() => {
+    initialization();
+  }, [initialization]);
 
   return (
     <div className="main-content">

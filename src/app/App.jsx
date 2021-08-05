@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -8,45 +7,14 @@ import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
-import { QUESTION_TYPES } from "./constants/QuestionTypes";
-import { SUB_TYPES } from "./constants/SubTypes";
-import { Card } from "./components/Card";
-import { EditorPage } from "./EditorPage";
+import { QUESTION_TYPES } from "../constants/QuestionTypes";
+import { SUB_TYPES } from "../constants/SubTypes";
+import { Card } from "../components/Card";
+import { EditorPage } from "../pages/EditorPage";
 import { Button } from "@material-ui/core";
-import { PreviewPage } from "./PreviewPage";
-
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerContainer: {
-    overflow: "auto",
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-  primary: {
-    fontWeight: 800,
-    fontSize: "1.2rem",
-  },
-}));
+import { PreviewPage } from "../pages/PreviewPage";
+import { useStyles } from "./appStyles";
 
 export default function App() {
   const classes = useStyles();
@@ -97,7 +65,7 @@ export default function App() {
           <Toolbar />
           <div className={classes.drawerContainer}>
             <List>
-              <ListItem style={{ fontSize: "bold" }}>
+              <ListItem className={classes.drawerHeader}>
                 <ListItemText
                   disableTypography
                   className={classes.primary}
@@ -123,14 +91,7 @@ export default function App() {
       <main className={classes.content}>
         <Toolbar />
         {!currentWindow && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "start",
-              margin: 10,
-              flexWrap: "wrap",
-            }}
-          >
+          <div className={classes.cardContainer}>
             {questionType &&
               SUB_TYPES[questionType].map(({ label, value }) => (
                 <Card

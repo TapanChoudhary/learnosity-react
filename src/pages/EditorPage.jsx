@@ -1,13 +1,9 @@
-import React, { useEffect } from "react";
-import { QUESTION_DATA } from "./constants/QuestionData";
-import { request } from "./autoInit";
+import React, { useCallback, useEffect } from "react";
+import { QUESTION_DATA } from "../constants/QuestionData";
+import { request } from "../initconfigs/autoInit";
 
 export const EditorPage = ({ subType, label }) => {
-  useEffect(() => {
-    initialization();
-  }, []);
-
-  const initialization = async () => {
+  const initialization = useCallback(() => {
     var callbacks = {
       readyListener: function () {
         //bindevent();
@@ -52,7 +48,11 @@ export const EditorPage = ({ subType, label }) => {
     // var authorApp = await window.LearnosityAuthor.init(request);
     console.log({ authorApp });
     // console.log(editor.getWidget());
-  };
+  }, [label, subType]);
+
+  useEffect(() => {
+    initialization();
+  }, [initialization]);
 
   return (
     <div className="main-content">

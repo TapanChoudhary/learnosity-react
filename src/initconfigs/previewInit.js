@@ -8,12 +8,12 @@ export const request = learnositySdk.init(
   "items",
   // security details
   {
-    consumer_key: "twRp5spenrCfVAa6",
+    consumer_key: process.env.REACT_APP_CONSUMER_KEY,
     domain: "localhost",
     user_id: "AnaTest_12_UserID",
   },
   // secret
-  "4QxI9yDD15X65SLyOnnUgd8TVL90Wj7aA4tJ37W5",
+  process.env.REACT_APP_LEARNOSITY_SECRET_KEY,
   // request details
   {
     user_id: "AnaTest_12_UserID",

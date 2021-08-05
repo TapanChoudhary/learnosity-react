@@ -12,10 +12,7 @@ code {
     monospace;
 }
 
-.lrn-author-item-nav.lrn-author-ui-no-preview > div.lrn-author-item-nav-left {
-  display: none;
-}
-
+.lrn-author-item-nav.lrn-author-ui-no-preview > div.lrn-author-item-nav-left,
 div.lrn-qe-toolbar div.lrn-qe-block.lrn-qe-float-left {
   display: none;
 }
